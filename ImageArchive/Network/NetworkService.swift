@@ -25,9 +25,9 @@ class NetworkService: Api{
     private func getRequest(completion: @escaping (Result<Codable?, Error>)->()){
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
-        urlComponents.host = "api.unplah.com"
+        urlComponents.host = "api.unsplash.com"
         urlComponents.path = "/photos"
-        urlComponents.queryItems = [URLQueryItem(name: "client_id", value: "1"),
+        urlComponents.queryItems = [URLQueryItem(name: "client_id", value: client_id),
                                     URLQueryItem(name: "page", value: "30"),
                                     URLQueryItem(name: "per_page", value: "15")]
         
@@ -39,10 +39,10 @@ class NetworkService: Api{
                 completion(.failure(error!))
                 return
             }
-            print(data)
             do{
-//                let resultData = try JSONDecoder().decode(.self, from: data)
-//                completion(.success(resultData))
+                let resultData = try JSONDecoder().decode([ImageEntity].self, from: data)
+                print(resultData)
+                completion(.success(resultData))
             }catch{
                 completion(.failure(error))
                 return
